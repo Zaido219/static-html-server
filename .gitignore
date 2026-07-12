@@ -16,7 +16,8 @@ x86/
 [Oo]bj/
 
 ## OMT directories
-纯文本/
+#I made gemini to generate this gitignore so what the fuck is this
+纯文本/ 
 
 ## Rider/Resharper
 .idea/
