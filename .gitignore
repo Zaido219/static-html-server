@@ -1,0 +1,29 @@
+## User-specific directories
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Compile outputs
+[Dd]ebug/
+[Dd]ebug-NetCore/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+## OMT directories
+纯文本/
+
+## Rider/Resharper
+.idea/
+
+## Testing artifacts
+TestResults/
+
+## OS generated files
+.DS_Store
+Thumbs.db
