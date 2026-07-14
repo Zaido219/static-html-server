@@ -8,6 +8,12 @@ namespace StaticHtmlServer.Domains.Files
     {
         public bool Exists(string path)
         {
+            // no path
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentException("Path cannot be empty or whitespace", nameof(path));
+            }
+            
             if (File.Exists(path))
             {
                 return true;
