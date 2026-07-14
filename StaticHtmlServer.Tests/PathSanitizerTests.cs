@@ -1,4 +1,5 @@
-﻿using StaticHtmlServer.Domains.Paths;
+﻿using System.Runtime.CompilerServices;
+using StaticHtmlServer.Domains.Paths;
 
 namespace StaticHtmlServer.Tests
 {
@@ -31,6 +32,21 @@ namespace StaticHtmlServer.Tests
             {
                 testSanitizer.Sanitize(testDir, maliciousPath);
             });
+        }
+        [Fact]
+        public void Sanitize_NoPathProvided_ThrowsArgumentException()
+        {
+            // arrange
+            string testDir = @"C:\wwwroot";
+            string emptyPath = "";
+
+            IPathSanitizer testSanitizer = new PathSanitizer();
+            // act & assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                testSanitizer.Sanitize(testDir, emptyPath);
+            });
+            
         }
     }
 

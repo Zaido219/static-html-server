@@ -8,6 +8,11 @@ namespace StaticHtmlServer.Domains.Paths
     {
        public string Sanitize(string rootDir, string requestedPath)
         {
+            // no path
+            if (string.IsNullOrWhiteSpace(requestedPath))
+            {
+                throw new ArgumentException("Path cannot be empty or whitespace.", nameof(requestedPath));
+            }
             // combine paths
             string combinePaths = Path.Combine(rootDir, requestedPath);
             // resolve full path
