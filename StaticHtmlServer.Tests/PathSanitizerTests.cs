@@ -9,7 +9,7 @@ namespace StaticHtmlServer.Tests
         {
             // arrange
             string testDir = @"C:\wwwroot";
-            string requestedPath = @"StaticHtmlServer\index.html";
+            string requestedPath = "index.html";;
             IPathSanitizer testSanitizer = new PathSanitizer();
 
             // act
