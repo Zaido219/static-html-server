@@ -19,6 +19,19 @@ namespace StaticHtmlServer.Tests
             Assert.Equal(expectedPath, result);
 
         }
+        [Fact]
+        public void Sanitize_MaliciousPath_ThrowsArgumentException()
+        {
+            // arrange
+            string testDir = @"C:\wwwroot";
+            string maliciousPath = @"..\..\Windows\System32\cmd.exe";
+            IPathSanitizer testSanitizer = new PathSanitizer();
+            // act & assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                testSanitizer.Sanitize(testDir, maliciousPath);
+            });
+        }
     }
 
 }
