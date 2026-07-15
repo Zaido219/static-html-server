@@ -8,7 +8,7 @@ namespace StaticHtmlServer.Tests
         public void Exist_CheckIfValidFileExist()
         {
             // Given
-            string testPath = @"C:\Users\User\Softwares\static-html-server\StaticHtmlServer\index.html";
+            string testPath = @"C:\Users\User\Softwares\static-html-server\StaticHtmlServer\wwwroot\index.html";
             IFileProvider testFileProvider = new FileProvider();
 
             // When
