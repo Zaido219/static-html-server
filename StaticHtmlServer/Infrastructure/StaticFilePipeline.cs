@@ -1,6 +1,7 @@
 using StaticHtmlServer.Domains.MimeTypes;
 using StaticHtmlServer.Domains.Paths;
 using StaticHtmlServer.Domains.Files;
+using StaticHtmlServer.Infrastructure;
 
 namespace StaticHtmlServer.Infrastructure
 {
@@ -22,13 +23,26 @@ namespace StaticHtmlServer.Infrastructure
             _pathSanitizer = pathSanitizer;
         }
 
-        public Task<HttpResponse> ExecuteAsync(string rawPath)
+        public async Task<HttpResponse> ExecuteAsync(string rawPath)
         {
             string sanitizedPath = _pathSanitizer.Sanitize(rawPath, rootDirectory);
             // check if path exist
-            if (_fileProvider.Exists(sanitizedPath))
+            if (!_fileProvider.Exists(sanitizedPath))
             {
-                
+                // short circuit
+                return HttpResponse.NotFound();
+            }
+            // get mime type
+            string mimeType = _mimeTypeProvider.GetMimeType(sanitizedPath);
+            // read the file's raw bytes asynchronously
+            using(Stream fileStream = _fileProvider.OpenRead(sanitizedPath))
+            using(MemoryStream ms = new MemoryStream())
+            {
+                await fileStream.CopyToAsync(ms);
+                byte[] fileBytes = ms.ToArray();
+
+                //return as custom http response
+                return HttpResponse.Ok(fileBytes, mimeType);
             }
         }
     }
