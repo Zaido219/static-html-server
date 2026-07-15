@@ -21,5 +21,16 @@ namespace StaticHtmlServer.Tests
             //then
             Assert.Equal(expectedMimeType, result);
         }
+        [Fact]
+        public void GetMimeType_MissingOrUnknownExtension_ReturnsDefaultMimeType()
+        {
+            // given
+            IMimeTypeProvider testProvider = new MimeTypeProvider();
+            string fileName = "archive.7z";
+            // when
+            string result = testProvider.GetMimeType(fileName);
+            // then
+            Assert.Equal("application/octet-stream", result);
+        }
     }
 }
