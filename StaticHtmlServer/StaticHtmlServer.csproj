@@ -8,7 +8,7 @@
   </PropertyGroup>
   <!-- for the html file -->
   <ItemGroup>
-    <None Update="index.html">
+    <None Update="wwwroot\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

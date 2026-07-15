@@ -1,7 +1,6 @@
 using StaticHtmlServer.Domains.MimeTypes;
 using StaticHtmlServer.Domains.Paths;
 using StaticHtmlServer.Domains.Files;
-using StaticHtmlServer.Infrastructure;
 
 namespace StaticHtmlServer.Infrastructure
 {
@@ -10,7 +9,7 @@ namespace StaticHtmlServer.Infrastructure
         private readonly IFileProvider _fileProvider;
         private readonly IMimeTypeProvider _mimeTypeProvider;
         private readonly IPathSanitizer _pathSanitizer;
-        private readonly string rootDirectory = @"C:\wwwroot";
+        private readonly string rootDirectory = Path.Combine(AppContext.BaseDirectory, "wwwroot");
         // constructor
         public StaticFilePipeline(
             IFileProvider fileProvider,

@@ -22,6 +22,7 @@ namespace StaticHtmlServer.Infrastructure
             // intialize tcp listener
             _listener = new TcpListener(IPAddress.Any, _port);
             _listener.Start();
+            Console.WriteLine("Static server listening...");
             // main loop to accept incoming client connections
             try
             {
