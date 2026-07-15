@@ -50,6 +50,8 @@ namespace StaticHtmlServer.Infrastructure
                 if(bytesRead == 0) return; // client disconnected immediately
                 string requestedText = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
                 // extract and execute
+                string rawPath = ExtractPath(requestedText);
+                HttpResponse response = await _pipeline.ExecuteAsync(rawPath);
 
             }
         }

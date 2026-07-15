@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace StaticHtmlServer.Infrastructure
 {
     public interface IRequestPipeline
