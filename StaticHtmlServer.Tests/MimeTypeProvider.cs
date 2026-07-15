@@ -32,5 +32,16 @@ namespace StaticHtmlServer.Tests
             // then
             Assert.Equal("application/octet-stream", result);
         }
+        [Fact]
+        public void GetMimeType_NoExtension_ReturnsDefaultMimeType()
+        {
+            //given
+            IMimeTypeProvider testProvider = new MimeTypeProvider();
+            string fileName = "Readme";
+            //when
+            string result = testProvider.GetMimeType(fileName);
+            //then
+            Assert.Equal("application/octet-stream", result);
+        }
     }
 }
