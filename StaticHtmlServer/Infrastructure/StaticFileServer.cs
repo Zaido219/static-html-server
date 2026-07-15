@@ -60,6 +60,11 @@ namespace StaticHtmlServer.Infrastructure
                 new[] {"\r\n", "\r", "\n" },
                 StringSplitOptions.RemoveEmptyEntries
             );
+            //ensure method recieve text lines to pars
+            if(lines.Length == 0)
+            {
+                throw new ArgumentException("Request payload is empty.");
+            }
             //take the first line
             string requestLine = lines[0];
             // split requestLine by space
