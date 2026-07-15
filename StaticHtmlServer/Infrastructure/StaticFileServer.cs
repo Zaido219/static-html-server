@@ -46,31 +46,43 @@ namespace StaticHtmlServer.Infrastructure
             using (client)
             using (var stream = client.GetStream())
             {
-                // read the raw bytes representing the http request from the socket stream
-                byte[] buffer = new byte[4096];
-                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
-                if (bytesRead == 0) return; // client disconnected immediately
-                string requestedText = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                // extract and execute
-                string rawPath = ExtractPath(requestedText);
-                HttpResponse response = await _pipeline.ExecuteAsync(rawPath);
-                // stream http response back
-                //Construct the HTTP raw text headers
-                string headers = $"HTTP/1.1 {response.StatusCode} {(response.StatusCode == 200 ? "OK" : "Not Found")}\r\n" +
-                                 $"Content-Type: {response.ContentType}\r\n" +
-                                 $"Content-Length: {response.Body.Length}\r\n" +
-                                 "Connection: close\r\n\r\n"; // Note the double \r\n at the end to separate headers from body!
+                try
+                {
 
-                //Convert only the text headers to bytes
-                byte[] headerBytes = System.Text.Encoding.UTF8.GetBytes(headers);
 
-                //Write the headers first
-                await stream.WriteAsync(headerBytes, 0, headerBytes.Length, cancellationToken);
+                    // read the raw bytes representing the http request from the socket stream
+                    byte[] buffer = new byte[4096];
+                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
+                    if (bytesRead == 0) return; // client disconnected immediately
+                    string requestedText = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    // extract and execute
+                    string rawPath = ExtractPath(requestedText);
+                    HttpResponse response = await _pipeline.ExecuteAsync(rawPath);
+                    // stream http response back
+                    //Construct the HTTP raw text headers
+                    string headers = $"HTTP/1.1 {response.StatusCode} {(response.StatusCode == 200 ? "OK" : "Not Found")}\r\n" +
+                                     $"Content-Type: {response.ContentType}\r\n" +
+                                     $"Content-Length: {response.Body.Length}\r\n" +
+                                     "Connection: close\r\n\r\n"; // Note the double \r\n at the end to separate headers from body!
 
-                //Write the file payload bytes directly (no conversion needed since it's already a byte[])
-                await stream.WriteAsync(response.Body, 0, response.Body.Length, cancellationToken);
-                //Explicitly flush the stream to ensure all bytes are sent out of the network card buffer
-                await stream.FlushAsync(cancellationToken);
+                    //Convert only the text headers to bytes
+                    byte[] headerBytes = System.Text.Encoding.UTF8.GetBytes(headers);
+
+                    //Write the headers first
+                    await stream.WriteAsync(headerBytes, 0, headerBytes.Length, cancellationToken);
+
+                    //Write the file payload bytes directly (no conversion needed since it's already a byte[])
+                    await stream.WriteAsync(response.Body, 0, response.Body.Length, cancellationToken);
+                    //Explicitly flush the stream to ensure all bytes are sent out of the network card buffer
+                    await stream.FlushAsync(cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"[Server Error] Exception during request handling: {ex.GetType().Name} - {ex.Message}");
+                    Console.WriteLine(ex.StackTrace);
+                    Console.ResetColor();
+                }
             }
         }
         private string ExtractPath(string fullPath)
