@@ -1,0 +1,1 @@
+console.log("Hello from your custom C# server's JavaScript asset!");
