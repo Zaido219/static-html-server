@@ -32,7 +32,7 @@ namespace StaticHtmlServer.Infrastructure
             // If the path starts with a slash (like "/index.html"), trim it 
             // so Path.Combine doesn't treat it as an absolute path on some systems
             rawPath = rawPath.TrimStart('/');
-            string sanitizedPath = _pathSanitizer.Sanitize(rawPath, rootDirectory);
+            string sanitizedPath = _pathSanitizer.Sanitize(rootDirectory, rawPath);
             // check if path exist
             if (!_fileProvider.Exists(sanitizedPath))
             {
