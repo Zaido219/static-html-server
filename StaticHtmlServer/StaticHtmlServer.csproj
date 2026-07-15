@@ -15,7 +15,4 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.3.11" />
   </ItemGroup>
-  <PropertyGroup>
-      <UseVSHostingProcess>false</UseVSHostingProcess>
-  </PropertyGroup>
 </Project>
