@@ -69,7 +69,8 @@ namespace StaticHtmlServer.Infrastructure
 
                 //Write the file payload bytes directly (no conversion needed since it's already a byte[])
                 await stream.WriteAsync(response.Body, 0, response.Body.Length, cancellationToken);
-
+                //Explicitly flush the stream to ensure all bytes are sent out of the network card buffer
+                await stream.FlushAsync(cancellationToken);
             }
         }
         private string ExtractPath(string fullPath)

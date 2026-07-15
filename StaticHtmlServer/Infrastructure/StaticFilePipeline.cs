@@ -24,6 +24,14 @@ namespace StaticHtmlServer.Infrastructure
 
         public async Task<HttpResponse> ExecuteAsync(string rawPath)
         {
+            //if browser request root '/' defualt to index.html
+            if (rawPath == "/")
+            {
+                rawPath = "index.html";
+            }
+            // If the path starts with a slash (like "/index.html"), trim it 
+            // so Path.Combine doesn't treat it as an absolute path on some systems
+            rawPath = rawPath.TrimStart('/');
             string sanitizedPath = _pathSanitizer.Sanitize(rawPath, rootDirectory);
             // check if path exist
             if (!_fileProvider.Exists(sanitizedPath))
@@ -34,8 +42,8 @@ namespace StaticHtmlServer.Infrastructure
             // get mime type
             string mimeType = _mimeTypeProvider.GetMimeType(sanitizedPath);
             // read the file's raw bytes asynchronously
-            using(Stream fileStream = _fileProvider.OpenRead(sanitizedPath))
-            using(MemoryStream ms = new MemoryStream())
+            using (Stream fileStream = _fileProvider.OpenRead(sanitizedPath))
+            using (MemoryStream ms = new MemoryStream())
             {
                 await fileStream.CopyToAsync(ms);
                 byte[] fileBytes = ms.ToArray();
